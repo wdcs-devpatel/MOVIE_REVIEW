@@ -20,7 +20,7 @@ export default function Home() {
     <div className="page-container">
       {loading && (
         <div className="movie-grid">
-          {Array.from({ length: 20 }).map((_, i) => (
+          {Array.from({ length: 18 }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
@@ -42,7 +42,7 @@ export default function Home() {
             </button>
 
             <span className="page-info">
-              Page {page} of {totalPages}
+              Page {page} of 20
             </span>
 
             <button

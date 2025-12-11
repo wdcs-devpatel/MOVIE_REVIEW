@@ -13,9 +13,7 @@ async function safeFetch(url) {
   }
 }
 
-// ------------------------------------
-// FALLBACK GENRES FOR SEARCH
-// ------------------------------------
+
 const GENRES = ["Drama", "Action", "Comedy", "Crime", "Romance", "Thriller", "Sci-Fi"];
 
 function assignGenre(movie) {
@@ -27,9 +25,6 @@ function assignGenre(movie) {
   };
 }
 
-// ------------------------------------
-// HOME MOVIES (TMDB GENRES APPLIED)
-// ------------------------------------
 export async function getMovies(page = 1) {
   const raw = await safeFetch(`${MOVIES_API}${page}`);
   const movies = raw.data || [];
@@ -51,27 +46,44 @@ export async function getMovies(page = 1) {
   };
 }
 
-// ------------------------------------
-// SEARCH MOVIES (LOCAL GENRE ONLY)
-// ------------------------------------
 export async function searchMovies(query, page = 1) {
   const raw = await safeFetch(`${MOVIES_API}${page}`);
 
-  let movies = raw.data.map(assignGenre);
+  let movies = raw.data.map((m) => {
+    const genre = GENRES[m.id % GENRES.length];
 
-  const filtered = movies.filter((m) =>
+    return {
+      ...m,
+      genre,
+      genres: [genre],
+      year: m.release_date ? Number(m.release_date.slice(0, 4)) : null,
+      rating: m.vote_average || 0
+    };
+  });
+
+  movies = movies.filter((m) =>
     m.original_title.toLowerCase().includes(query.toLowerCase())
   );
 
-  return {
-    data: filtered,
+  const fastResult = {
+    data: movies,
     last_page: raw.last_page,
   };
+
+ 
+  (async () => {
+    for (let movie of movies) {
+      const tmdbGenres = await fetchGenreForMovie(movie.original_title);
+      movie.genres = tmdbGenres;
+      movie.genre = tmdbGenres[0] || movie.genre;
+    }
+  })();
+
+  return fastResult;
 }
 
-// ------------------------------------
-// MOVIE DETAIL (TMDB GENRE APPLIED)
-// ------------------------------------
+
+
 export async function getMovieById(id) {
   for (let p = 1; p <= 20; p++) {
     const raw = await safeFetch(`${MOVIES_API}${p}`);

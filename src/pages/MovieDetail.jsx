@@ -17,9 +17,7 @@ export default function MovieDetail() {
 
   const trailerURL = "https://www.youtube.com/embed/dQw4w9WgXcQ";
 
-  // ---------------------------
-  // LOAD MAIN MOVIE
-  // ---------------------------
+
   useEffect(() => {
     async function loadMovie() {
       setLoading(true);
@@ -36,28 +34,22 @@ export default function MovieDetail() {
     loadMovie();
   }, [id]);
 
-  // ---------------------------
-  // LOAD RELATED MOVIES
-  // ---------------------------
+ 
   useEffect(() => {
     async function loadRelated() {
       if (!movie) return;
 
       let all = [];
 
-      // Fetch 5 pages for variety
       for (let p = 1; p <= 5; p++) {
         const res = await getMovies(p);
         all.push(...res.data);
       }
 
-      // Remove current movie
       all = all.filter((m) => m.id !== movie.id);
 
-      // Shuffle randomly
       all.sort(() => Math.random() - 0.5);
 
-      // Pick first 6
       setRelated(all.slice(0, 6));
     }
 
@@ -76,7 +68,6 @@ export default function MovieDetail() {
 
   return (
     <div className="movie-detail-container">
-      {/* ---------------- HEADER ---------------- */}
       <div className="movie-detail-header">
         <img src={poster} className="movie-detail-poster" alt="" />
 
@@ -91,7 +82,6 @@ export default function MovieDetail() {
 
           <p className="movie-detail-overview">{movie.overview}</p>
 
-          {/* WATCHLIST BUTTON */}
           <button
             className="detail-watchlist-btn"
             onClick={() =>
@@ -105,7 +95,6 @@ export default function MovieDetail() {
               : "Add to Watchlist"}
           </button>
 
-          {/* TRAILER BUTTON */}
           <button
             className="trailer-btn"
             onClick={() => setShowTrailer(true)}
@@ -115,7 +104,6 @@ export default function MovieDetail() {
         </div>
       </div>
 
-      {/* ---------------- CAST SECTION ---------------- */}
       <h2 className="section-title">Cast</h2>
 
       <div className="cast-grid">
@@ -134,7 +122,6 @@ export default function MovieDetail() {
         ))}
       </div>
 
-      {/* ---------------- TRAILER MODAL ---------------- */}
       {showTrailer && (
         <div
           className="trailer-modal-overlay"
@@ -156,7 +143,6 @@ export default function MovieDetail() {
         </div>
       )}
 
-      {/* ---------------- RELATED MOVIES ---------------- */}
       <h2 className="section-title">Related Movies</h2>
 
       <div className="related-grid">

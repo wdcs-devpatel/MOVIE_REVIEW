@@ -899,3 +899,9 @@
     color: white;
     border: none;
   }
+
+  .movie-year {
+  color: #bbb;
+  margin-left: 10px;
+  font-size: 0.9rem;
+}

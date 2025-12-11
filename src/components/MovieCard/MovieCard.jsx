@@ -5,10 +5,15 @@ export default function MovieCard({ movie }) {
   const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
 
   const added = isInWatchlist(movie.id);
+
   const poster =
     movie.poster_path || "https://via.placeholder.com/300x450?text=No+Image";
 
   const genre = movie.genre || movie.genres?.[0] || "Unknown";
+
+  const year = movie.release_date
+    ? movie.release_date.slice(11,16)
+    : "Unknown";
 
   return (
     <div className="movie-card">
@@ -20,6 +25,7 @@ export default function MovieCard({ movie }) {
 
       <div className="movie-meta-row">
         <span className="movie-genre">{genre}</span>
+        <span className="movie-year">{year}</span>
         <span className="movie-rating">⭐ {movie.vote_average}</span>
       </div>
 

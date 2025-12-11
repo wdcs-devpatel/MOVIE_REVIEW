@@ -1,4 +1,3 @@
-// src/pages/Search.jsx
 import { useState, useEffect } from "react";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Filters from "../../components/Filters/Filters";
@@ -23,45 +22,56 @@ export default function Search() {
 
   const [loading, setLoading] = useState(false);
 
-  /* -------------------------
-      SEARCH RESULTS FETCH
-  ---------------------------*/
+
   useEffect(() => {
     async function load() {
       if (debouncedQuery.trim() === "") {
         setResults([]);
+        setFiltered([]);
         return;
       }
 
       setLoading(true);
-      const res = await searchMovies(debouncedQuery, 1);
+
+      const res = await searchMovies(debouncedQuery);
       setResults(res.data);
+
       setLoading(false);
     }
 
     load();
   }, [debouncedQuery]);
 
-  /* -------------------------
-      APPLY FILTERS
-  ---------------------------*/
+
   useEffect(() => {
     let list = [...results];
 
     if (filters.genre) {
-      list = list.filter(m => m.genre === filters.genre);
+      list = list.filter((m) => m.genre === filters.genre);
     }
 
     if (filters.year) {
-      list = list.filter(m => m.year == filters.year);
+      list = list.filter((m) => {
+        if (!m.release_date) return false;
+        return Number(m.release_date.slice(0, 4)) === Number(filters.year);
+      });
     }
 
     if (filters.rating) {
-      list = list.filter(m => m.rating >= Number(filters.rating));
+      list = list.filter((m) => m.vote_average >= Number(filters.rating));
     }
 
     setFiltered(list);
   }, [filters, results]);
+
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setResults((prev) => [...prev]); 
+    }, 700);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="page-container">
@@ -71,7 +81,9 @@ export default function Search() {
 
       {loading && (
         <div className="movie-grid">
-          {[...Array(12)].map((_, i) => <SkeletonCard key={i} />)}
+          {[...Array(12)].map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       )}
 
@@ -82,7 +94,6 @@ export default function Search() {
       {!loading && filtered.length > 0 && (
         <MovieGrid movies={filtered} />
       )}
-
     </div>
   );
 }
