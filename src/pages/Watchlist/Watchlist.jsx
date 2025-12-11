@@ -39,9 +39,10 @@ export default function Watchlist() {
 
                 <div className="movie-info">
                   <h3 className="movie-title">{movie.original_title}</h3>
-
+                  
                   <div className="movie-meta-row">
                     <span>{genre}</span>
+                    
                     <span className="movie-rating">⭐ {movie.vote_average}</span>
                   </div>
                 </div>

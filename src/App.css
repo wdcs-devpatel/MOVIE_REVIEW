@@ -1,19 +1,43 @@
-  /* =========================================================
-    GLOBAL THEME (CINEMATIC DARK)
+/* =========================================================
+    GLOBAL THEME VARIABLES
     ========================================================= */
   :root {
     --primary-bg: #01010e;
     --secondary-bg: #03030c;
     --card-bg: #1a1a24;
-
-    --accent-red: #ff3b3b;
-    --accent-red-dark: #d62828;
-
+    
     --text-main: #f2f2f5;
     --text-muted: #9ca3af;
 
+    --accent-red: #ff3b3b;
+    --accent-red-dark: #d62828;
+    
+    --border-color: rgba(255, 255, 255, 0.08);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    
+    --btn-secondary: #272733;
+    --btn-secondary-hover: #383848;
+
     --card-radius: 16px;
-    --transition-speed: 0.25s;
+    --transition-speed: 0.3s;
+  }
+
+  [data-theme="light"] {
+    --primary-bg: #f3f4f6;       
+    --secondary-bg: #ffffff;     
+    --card-bg: #ffffff;          
+    
+    --text-main: #111827;        
+    --text-muted: #6b7280;       
+
+    --accent-red: #ef4444;       
+    --accent-red-dark: #dc2626;
+
+    --border-color: rgba(0, 0, 0, 0.1);  
+    --input-bg: #f3f4f6;                 
+    
+    --btn-secondary: #e5e7eb;           
+    --btn-secondary-hover: #d1d5db;      
   }
 
   * {
@@ -21,7 +45,7 @@
     padding: 0;
     box-sizing: border-box;
   } 
-
+  
   html, body {
     width: 100%;
     min-height: 100vh;
@@ -29,6 +53,7 @@
     background: var(--primary-bg);
     color: var(--text-main);
     line-height: 1.5;
+    transition: background 0.3s ease, color 0.3s ease;
   }
 
   .page {
@@ -38,15 +63,14 @@
     padding: 20px 25px;
   }
 
-
-  /* =========================================================
-    NAVBAR
+/* =========================================================
+    NAVBAR (REST ON LEFT, BUTTON ON RIGHT)
     ========================================================= */
   .navbar {
     width: 100%;
-    padding: 18px 35px;
-    background: rgba(10, 10, 15, 0.85);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0 35px;
+    background: var(--secondary-bg);
+    border-bottom: 1px solid var(--border-color);
     
     display: flex;
     align-items: center; 
@@ -55,12 +79,12 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     
     height: 70px; 
     box-sizing: border-box; 
+    transition: background 0.3s ease;
   }
-
 
   .nav-logo {
     color: var(--text-main);
@@ -68,13 +92,7 @@
     font-weight: 900;
     text-decoration: none;
     letter-spacing: 1px;
-    
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
-    
+    margin-right: 40px; 
     line-height: 1;
     display: flex;
     align-items: center;
@@ -83,11 +101,9 @@
 
   .nav-right {
     display: flex;
-    gap: 30px;
     align-items: center; 
-    height: 100%; 
-    position: relative; 
-    z-index: 2;
+    gap: 30px; 
+    flex-grow: 1; 
   }
 
   .nav-link {
@@ -95,14 +111,110 @@
     font-size: 1rem;
     font-weight: 600;
     text-decoration: none;
-    transition: 0.25s ease;
+    transition: color 0.25s ease;
+    position: relative; 
+    padding: 5px 0;
   }
 
   .nav-link:hover {
     color: var(--text-main);
-    background: transparent; 
   }
 
+  .nav-link.active {
+    color: var(--text-main); 
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px; 
+    width: 0%; 
+    height: 2px; 
+    background: var(--accent-red); 
+    border-radius: 2px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px rgba(255, 59, 59, 0.5); 
+  }
+
+  .nav-link.active::after {
+    width: 100%; 
+  }
+
+  /* =========================================================
+    NEW TOGGLE BUTTON ANIMATION (SLIDER)
+    ========================================================= */
+ /* =========================================================
+  THEME TOGGLE BUTTON (SMALLER EMOJI SLIDER)
+  ========================================================= */
+.theme-toggle-btn {
+  margin-left: auto; 
+  
+  /* Reduced dimensions for a smaller footprint */
+  width: 64px; 
+  height: 36px;
+  border-radius: 50px;
+  border: 2px solid #222; 
+  background: #000;      
+  
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  
+  /* Hides any HTML text */
+  color: transparent;
+  font-size: 0;
+  
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* --- SLIDING CIRCLE (THUMB) --- */
+.theme-toggle-btn::after {
+  content: '🌙'; 
+  position: absolute;
+  top: 50%;
+  left: 3px; /* Tighter spacing */
+  transform: translateY(-50%);
+  
+  /* Smaller circle and font size */
+  width: 26px;
+  height: 26px;
+  font-size: 0.9rem;
+  
+  background: #fff;
+  border-radius: 50%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  
+  /* Bouncy Animation */
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* --- LIGHT MODE STATE --- */
+[data-theme="light"] .theme-toggle-btn {
+  background: #e2e8f0; 
+  border-color: #cbd5e1;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+[data-theme="light"] .theme-toggle-btn::after {
+  content: '☀️';
+  /* Adjusted calculation for smaller size: 100% - (width + spacing) */
+  left: calc(100% - 29px); 
+  background: #fff;
+  transform: translateY(-50%) rotate(360deg); /* Spin effect */
+  box-shadow: -2px 2px 8px rgba(0,0,0,0.1);
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-red); /* Adds a subtle glow on hover */
+}
   /* =========================================================
     MOVIE GRID (MAIN)
     ========================================================= */
@@ -122,7 +234,7 @@
     background: var(--card-bg);
     border-radius: var(--card-radius);
     padding: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--border-color); 
     display: flex;
     flex-direction: column;
     transition: var(--transition-speed);
@@ -131,7 +243,7 @@
 
   .movie-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15); 
   }
 
   .poster-wrapper {
@@ -139,13 +251,14 @@
     height: 300px;
     overflow: hidden;
     border-radius: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 22px;
     flex-shrink: 0;
     position: relative;
+    background: var(--input-bg); 
   }
 
   .movie-poster {
-    width: 89%;
+    width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
@@ -155,49 +268,118 @@
     transform: scale(1.05);
   }
 
+/* =========================================
+     1. CARD INFO CONTAINER (Left Align)
+     ========================================= */
   .movie-info {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-bottom: 12px;
+    align-items: flex-start; 
+    text-align: left;        
+    gap: 8px;
+    margin-bottom: 15px;
+    width: 100%;
   }
 
   .movie-title {
     font-size: 1.1rem;
-    font-weight: 700;
-    line-height: 1.3;
-    color: #fff;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--text-main); 
     margin: 0;
+    width: 100%;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 1; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
+  /* =========================================
+     2. META ROW (The "Fantasy 1996 5.6" line)
+     ========================================= */
   .movie-meta-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
     align-items: center;
-    font-size: 0.9rem;
-    color: var(--text-muted);
+    width: 100%;
+    font-size: 0.85rem;
+    color: var(--text-muted); 
+    font-weight: 500;
+  }
+
+  .movie-genre {
+    color: var(--text-muted); 
+    opacity: 0.8;
+  }
+  .movie-year {
+    color: var(--text-muted); 
+    margin: 0; 
   }
 
   .movie-rating {
-    color: #fbbf24;
+    color: #fbbf24; 
     font-weight: 700;
     display: flex;
     align-items: center;
     gap: 4px;
   }
 
+  /* =========================================
+     3. BUTTONS (Details = Grey, Watchlist = Blue)
+     ========================================= */
   .movie-buttons {
     margin-top: auto;
     display: flex;
     gap: 10px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    width: 100%;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color); 
   }
 
-  /* These generic styles are overridden by specific button classes below */
-  .details-btn,
-  .watchlist-btn {
+  .details-btn {
     flex: 1;
+    background: var(--btn-secondary); 
+    border: none;
+    border-radius: 50px;
+    color: var(--text-main); 
+    font-size: 0.85rem;
+    font-weight: 600;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    text-decoration: none;
+  }
+
+  .details-btn:hover {
+    background: var(--btn-secondary-hover); 
+    transform: translateY(-2px);
+  }
+
+  
+  .watchlist-btn {
+    flex: 1.5; 
+    background: linear-gradient(135deg, #ff4a4a 0%, #ff4a4a 100%);
+    border: none;
+    border-radius: 50px;
+    color: #fff; 
+    font-size: 0.9rem;
+    font-weight: 700;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px #ff4a4a(79, 70, 229, 0.4); 
+    transition: 0.2s;
+  }
+
+  .watchlist-btn:hover {
+    background: linear-gradient(135deg, #ff4a4a 0%, #ff4a4a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px #ff4a4a ;
   }
 
   /* =========================================================
@@ -206,14 +388,14 @@
   .related-section {
     margin-top: 80px;
     padding-top: 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--border-color); 
   }
 
   .related-title {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 25px;
-    color: #fff;
+    color: var(--text-main); 
     border-left: 4px solid var(--accent-red);
     padding-left: 15px;
   }
@@ -231,9 +413,9 @@
   .page-btn {
     padding: 10px 24px;
     border-radius: 50px;
-    border: none;
-    background: #2a2a35;
-    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    background: var(--btn-secondary); 
+    color: var(--text-main);
     cursor: pointer;
     font-weight: 600;
     transition: var(--transition-speed);
@@ -242,6 +424,7 @@
   .page-btn:hover {
     background: var(--accent-red);
     color: white;
+    border-color: var(--accent-red);
   }
 
   .page-btn:disabled {
@@ -270,7 +453,7 @@
     height: 500px;
     object-fit: cover;
     border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
   }
 
@@ -291,7 +474,7 @@
     margin: 0;
     line-height: 1.1;
     letter-spacing: -0.5px;
-    color: #fff;
+    color: var(--text-main); 
     margin-bottom: 10px;
   }
 
@@ -303,7 +486,7 @@
     font-size: 1rem;
     color: var(--text-muted);
     padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-color); 
   }
 
   .movie-detail-meta .rating {
@@ -319,21 +502,22 @@
 
   .movie-detail-meta .year,
   .movie-detail-meta .genre {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--input-bg); 
+    color: var(--text-main);
     padding: 6px 14px;
     border-radius: 8px;
     font-weight: 600;
   }
 
   .movie-detail-overview {
-    color: #d1d5db;
+    color: var(--text-muted);
     line-height: 1.8;
     font-size: 1.1rem;
     margin-top: 10px;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--input-bg); 
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
   }
 
   .detail-watchlist-btn {
@@ -342,7 +526,7 @@
     height: 56px;
     padding: 0 40px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #ff3b3b 0%, #d62828 100%);
+    background: linear-gradient(135deg, #ff4a4a 0%, #ff4a4a 100%);
     color: white;
     font-size: 1.1rem;
     font-weight: 700;
@@ -352,20 +536,21 @@
     align-items: center;
     gap: 12px;
     border: none;
-    box-shadow: 0 8px 20px rgba(255, 59, 59, 0.3);
+    box-shadow: 0 3px 5px #ff4a4a;
   }
 
-  .detail-watchlist-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(255, 59, 59, 0.4);
-    background: linear-gradient(135deg, #ff4b4b 0%, #e62828 100%);
-  }
+ .detail-watchlist-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px #ff4a4a; 
+  background: linear-gradient(135deg, #ff4a4a 0%, #ff4a4a 100%);
+}
+
 
   .section-title {
     font-size: 1.5rem;
     font-weight: 700;
     margin: 40px 0 25px;
-    color: #fff;
+    color: var(--text-main); 
     border-left: 4px solid var(--accent-red);
     padding-left: 15px;
   }
@@ -379,12 +564,12 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--input-bg);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--border-color);
     border-radius: 4px;
     transition: background 0.2s;
   }
@@ -394,7 +579,7 @@
   }
 
   /* =========================================================
-    CAST SECTION (HORIZONTAL SCROLL)
+    CAST SECTION 
     ========================================================= */
   .cast-grid {
     display: flex;
@@ -428,7 +613,7 @@
     border-radius: 12px;
     object-fit: cover;
     margin-bottom: 10px;
-    background: #222;
+    background: var(--input-bg);
     transition: transform 0.3s ease;
   }
 
@@ -439,7 +624,7 @@
   .cast-name {
     font-size: 0.95rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-main);
     margin-bottom: 4px;
     line-height: 1.3;
   }
@@ -468,7 +653,7 @@
     background: var(--card-bg);
     border-radius: 14px;
     padding: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color); 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     display: flex;
@@ -479,8 +664,8 @@
 
   .related-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-color: var(--text-muted);
   }
 
   .related-poster {
@@ -495,7 +680,7 @@
   .related-title {
     font-size: 1rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-main); 
     margin: 0 0 8px 0;
     line-height: 1.3;
     display: -webkit-box;
@@ -524,7 +709,7 @@
     display: flex;
     gap: 10px;
     padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border-color); 
   }
 
   /* =========================================================
@@ -605,109 +790,10 @@
   .error-state { color: var(--accent-red); padding: 20px; text-align: center; }
 
   /* =========================================================
-    DETAILS BUTTON (NEW PREMIUM UI)
-    ========================================================= */
-  .details-btn {
-    /* Glassmorphism Background */
-    background: rgba(255, 255, 255, 0.05); 
-    backdrop-filter: blur(5px);
-    
-    /* Border */
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    
-    /* Text */
-    color: #e2e8f0;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    
-    /* Shape */
-    border-radius: 50px;
-    height: 40px;
-    padding: 0 20px;
-    
-    /* Flex Centering */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    
-    /* Animation */
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    cursor: pointer;
-  }
-
-  /* Details Button Hover */
-  .details-btn:hover {
-    background: rgba(255, 255, 255, 0.15); /* Slightly brighter */
-    border-color: rgba(255, 255, 255, 0.5); /* Glowy white border */
-    color: #fff;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  }
-
-  /* Details Button Click */
-  .details-btn:active {
-    transform: scale(0.95);
-    background: rgba(255, 255, 255, 0.02);
-  }
-
-  /* =========================================================
-    WATCHLIST BUTTON (Premium UI Update)
-    ========================================================= */
-
-  /* Default State (Red - Add / Remove) */
-  .watchlist-btn {
-    /* Richer Gradient */
-    background: linear-gradient(135deg, #ff3b3b 0%, #c02626 100%);
-    color: white;
-    border: none;
-    
-    /* Shape & Spacing */
-    border-radius: 50px;
-    height: 40px;
-    padding: 0 20px;
-    
-    /* Typography */
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: capitalize;
-    
-    /* Layout */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    
-    /* Interaction */
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    
-    /* Cinematic Glow Shadow */
-    box-shadow: 0 4px 15px rgba(255, 59, 59, 0.35);
-  }
-
-  /* Hover Effect */
-  .watchlist-btn:hover {
-    transform: translateY(-3px) scale(1.02);
-    background: linear-gradient(135deg, #ff4f4f 0%, #d92b2b 100%);
-    box-shadow: 0 8px 25px rgba(255, 59, 59, 0.55);
-  }
-
-  /* Click/Active Effect */
-  .watchlist-btn:active {
-    transform: scale(0.95);
-    box-shadow: 0 2px 8px rgba(255, 59, 59, 0.3);
-  }
-
-  /* =========================================================
     WATCHLIST BUTTON (Added State – Emerald Green)
     ========================================================= */
 
-  /* Use this class when the movie is ALREADY in the watchlist */
   .watchlist-btn.added {
-    /* Vibrant Emerald Gradient */
     background: linear-gradient(135deg, #10b981 0%, #047857 100%) !important;
     color: #fff !important;
     box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
@@ -722,7 +808,7 @@
   .watchlist-btn.added:active {
     transform: scale(0.95);
   }
-  /* REMOVE BUTTON (Grey / Dark Mode) */
+  
   .remove-btn {
     background: rgb(214, 10, 10);
     color: #e5e5e5;
@@ -776,7 +862,7 @@
   }
 
   .trailer-modal {
-    background: #111;
+    background: var(--card-bg); 
     padding: 20px;
     border-radius: 16px;
     width: 70%;
@@ -817,16 +903,16 @@
     width: 100%;
     padding: 14px 18px;
     border-radius: 50px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: #fff;
+    background: var(--input-bg); 
+    border: 1px solid var(--border-color); 
+    color: var(--text-main); 
     font-size: 1rem;
     outline: none;
   }
 
   .search-input:focus {
     border-color: #ff3b3b;
-    background: rgba(255,255,255,0.1);
+    background: var(--card-bg);
   }
 
 
@@ -837,7 +923,7 @@
     align-items: center;
     margin: 25px auto;
     padding: 12px 20px;
-    background: rgba(255,255,255,0.04);
+    background: var(--input-bg); 
     backdrop-filter: blur(6px);
     border-radius: 12px;
     width: fit-content;
@@ -845,10 +931,10 @@
 
   .filter-select {
     padding: 12px 22px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
-    color: #fff;
+    color: var(--text-main); 
     font-size: 0.95rem;
     outline: none;
     cursor: pointer;
@@ -857,51 +943,17 @@
 
   .filter-select:hover {
     border-color: #ff4a4a;
-    background: rgba(255,255,255,0.15);
+    background: var(--input-bg);
   }
 
   .filter-select:focus {
     border-color: #ff4a4a;
     box-shadow: 0 0 8px rgba(255,0,0,0.4);
   }
-  .filters-container {
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-  }
-
-  .filter-select {
-    background: #1d1725;
-    color: white;
-    border: 1px solid #333;
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-
-  .filter-select:hover {
-    border-color: #ff004f;
-  }
-
-  .filter-select:focus {
-    outline: none;
-    border-color: #ff004f;
-    box-shadow: 0 0 6px rgba(255, 0, 80, 0.6);
-  }
-
-  /* Dropdown options */
+  
   .filter-select option {
-    background: #231b2e;
+    background: var(--card-bg); 
     padding: 8px;
-    color: white;
+    color: var(--text-main);
     border: none;
   }
-
-  .movie-year {
-  color: #bbb;
-  margin-left: 10px;
-  font-size: 0.9rem;
-}

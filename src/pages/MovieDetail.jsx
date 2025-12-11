@@ -6,7 +6,6 @@ import { getMovieById, getMovies } from "../api/api";
 export default function MovieDetail() {
   const { id } = useParams();
   const location = useLocation();
-
   const [movie, setMovie] = useState(location.state?.movie || null);
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(!movie);
@@ -16,7 +15,6 @@ export default function MovieDetail() {
     useWatchlist();
 
   const trailerURL = "https://www.youtube.com/embed/dQw4w9WgXcQ";
-
 
   useEffect(() => {
     async function loadMovie() {
