@@ -26,6 +26,7 @@
                 className="filter-select"
             >
                 <option value="">All Genres</option>
+                <option value="Animation">Animation</option>
                 <option value="Drama">Drama</option>
                 <option value="Action">Action</option>
                 <option value="Comedy">Comedy</option>
@@ -35,17 +36,22 @@
                 <option value="Sci-Fi">Sci-Fi</option>
             </select>
 
-            <select
-                value={year}
-                onChange={(e) => updateFilters({ year: e.target.value })}
-                className="filter-select"
-            >
-                <option value="">All Years</option>
-                {Array.from({ length: 25 }).map((_, i) => {
-                const y = 2024 - i;
-                return <option key={y} value={y}>{y}</option>;
-                })}
-            </select>
+        <select
+  value={year}
+  onChange={(e) => updateFilters({ year: e.target.value })}
+  className="filter-select"
+>
+  <option value="">All Years</option>
+
+  <option value="2025-2020">2025 - 2020</option>
+  <option value="2020-2015">2020 - 2015</option>
+  <option value="2015-2010">2015 - 2010</option>
+  <option value="2010-2000">2010 - 2000</option>
+  <option value="2000-1990">2000 - 1990</option>
+  <option value="1990-1970">1990 - 1970</option>
+  <option value="before-1970">Before 1970</option>
+</select>
+
 
             <select
                 value={rating}

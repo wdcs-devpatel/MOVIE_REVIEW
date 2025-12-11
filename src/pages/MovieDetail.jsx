@@ -160,13 +160,13 @@ export default function MovieDetail() {
             <p className="related-rating">⭐ {m.vote_average}</p>
 
             <div className="related-buttons">
-              <Link
-                to={`/movie/${m.id}`}
-                state={{ movie: m }}
-                className="details-btn"
-              >
-                Details
-              </Link>
+            <Link
+              to={`/movie/${m.movie_id}`}
+              state={{ movie: m }}
+              className="details-btn"
+            >
+              Details
+            </Link>
 
               <button
                 className={`watchlist-btn ${

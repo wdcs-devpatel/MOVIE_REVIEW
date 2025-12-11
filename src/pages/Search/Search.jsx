@@ -22,7 +22,6 @@ export default function Search() {
 
   const [loading, setLoading] = useState(false);
 
-
   useEffect(() => {
     async function load() {
       if (debouncedQuery.trim() === "") {
@@ -34,13 +33,48 @@ export default function Search() {
       setLoading(true);
 
       const res = await searchMovies(debouncedQuery);
-      setResults(res.data);
+      setResults(res.data || []);
 
       setLoading(false);
     }
 
     load();
   }, [debouncedQuery]);
+
+
+  function extractYear(release_date) {
+    if (!release_date) return null;
+    const match = String(release_date).match(/(\d{4})/);
+    return match ? Number(match[1]) : null;
+  }
+
+  function yearMatches(release_date, yearFilter) {
+    if (!yearFilter) return true;
+    const movieYear = extractYear(release_date);
+    if (!movieYear) return false; 
+
+    if (yearFilter === "before-1970") {
+      return movieYear < 1970;
+    }
+
+    if (yearFilter.includes("-")) {
+      const parts = yearFilter.split("-").map((p) => Number(p)).filter(n => !isNaN(n));
+      if (parts.length === 2) {
+        const [a, b] = parts;
+        const start = Math.max(a, b);
+        const end = Math.min(a, b);
+        return movieYear <= start && movieYear >= end;
+      }
+      return false;
+    }
+
+    const filterYear = Number(yearFilter);
+    if (!isNaN(filterYear)) {
+      return movieYear === filterYear;
+    }
+
+    return false;
+  }
 
 
   useEffect(() => {
@@ -51,10 +85,7 @@ export default function Search() {
     }
 
     if (filters.year) {
-      list = list.filter((m) => {
-        if (!m.release_date) return false;
-        return Number(m.release_date.slice(0, 4)) === Number(filters.year);
-      });
+      list = list.filter((m) => yearMatches(m.release_date, filters.year));
     }
 
     if (filters.rating) {
