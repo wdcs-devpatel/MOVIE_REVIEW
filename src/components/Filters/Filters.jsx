@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { useState } from "react";      
 export default function Filters({ onFilterChange }) {
     const [genre, setGenre] = useState("");
     const [year, setYear] = useState("");
@@ -49,8 +48,7 @@ export default function Filters({ onFilterChange }) {
                 <option value="1990-1970">1970 - 1990</option>
                 <option value="before-1970">Before 19 70</option>
             </select>
-
-
+        
             <select
                 value={rating}
                 onChange={(e) => updateFilters({ rating: e.target.value })}

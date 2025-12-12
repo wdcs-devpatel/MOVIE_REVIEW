@@ -112,7 +112,7 @@ export default function Search() {
 
       {loading && (
         <div className="movie-grid">
-          {[...Array(12)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>

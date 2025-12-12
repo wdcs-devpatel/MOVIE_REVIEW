@@ -32,7 +32,6 @@ export default function MovieDetail() {
     loadMovie();
   }, [id]);
 
- 
   useEffect(() => {
     async function loadRelated() {
       if (!movie) return;
@@ -105,7 +104,7 @@ export default function MovieDetail() {
       <h2 className="section-title">Cast</h2>
 
       <div className="cast-grid">
-        {(movie.casts || []).slice(0, 10).map((c) => (
+        {(movie.casts || []).slice(0,8).map((c) => (
           <div className="cast-card" key={c.id}>
             <img
               src={

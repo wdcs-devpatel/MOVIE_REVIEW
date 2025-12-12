@@ -31,7 +31,6 @@ export default function Home() {
       {!loading && movies.length > 0 && (
         <>
           <MovieGrid movies={movies} />
-
           <div className="pagination">
             <button
               className="page-btn"
@@ -48,7 +47,7 @@ export default function Home() {
             <button
               className="page-btn"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
+              disabled={page === 20}
             >
               Next
             </button>
