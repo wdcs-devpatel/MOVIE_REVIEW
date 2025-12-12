@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useWatchlist } from "../../context/WatchlistContext";
+import { useWatchlist } from "../../context/WatchlistContext.jsx";
 
 export default function Watchlist() {
   const { watchlist, removeFromWatchlist } = useWatchlist();
@@ -27,7 +27,7 @@ export default function Watchlist() {
 
             const genre = movie.genre || movie.genres?.[0] || "Drama";
 
-              return (
+            return (
               <div className="movie-card" key={movie.id}>
                 <div className="poster-wrapper">
                   <img
@@ -39,11 +39,12 @@ export default function Watchlist() {
 
                 <div className="movie-info">
                   <h3 className="movie-title">{movie.original_title}</h3>
-                  
+
                   <div className="movie-meta-row">
                     <span>{genre}</span>
-                    
-                    <span className="movie-rating">⭐ {movie.vote_average}</span>
+                    <span className="movie-rating">
+                      ⭐ {movie.vote_average}
+                    </span>
                   </div>
                 </div>
 

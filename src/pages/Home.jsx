@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { getMovies } from "../api/api";
 import useFetch from "../hooks/useFetch";
-import MovieGrid from "../components/MovieGrid/MovieGrid";
-import SkeletonCard from "../components/Skeleton/SkeletonCard";
-import ErrorState from "../components/Error/ErrorState";
+
+import MovieGrid from "../components/MovieGrid.jsx";
+import SkeletonCard from "../components/SkeletonCard.jsx";
+import ErrorState from "../components/ErrorState.jsx";
 
 export default function Home() {
   const [page, setPage] = useState(1);
@@ -31,6 +32,7 @@ export default function Home() {
       {!loading && movies.length > 0 && (
         <>
           <MovieGrid movies={movies} />
+
           <div className="pagination">
             <button
               className="page-btn"

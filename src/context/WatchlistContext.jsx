@@ -9,10 +9,12 @@ export function WatchlistProvider({ children }) {
     if (typeof window === "undefined") return;
 
     try {
-      const saved = window.localStorage.getItem("watchlist");
-      if (saved) setWatchlist(JSON.parse(saved));
-    } catch (e) {
-      console.warn("LocalStorage blocked, running without persistence");
+      const saved = localStorage.getItem("watchlist");
+      if (saved) {
+        setWatchlist(JSON.parse(saved));
+      }
+    } catch (err) {
+      console.warn("LocalStorage blocked — watchlist won't persist", err);
     }
   }, []);
 
@@ -20,20 +22,24 @@ export function WatchlistProvider({ children }) {
     if (typeof window === "undefined") return;
 
     try {
-      window.localStorage.setItem("watchlist", JSON.stringify(watchlist));
-    } catch (e) {
-      console.warn("Unable to save watchlist:", e);
+      localStorage.setItem("watchlist", JSON.stringify(watchlist));
+    } catch (err) {
+      console.warn("Unable to save watchlist:", err);
     }
   }, [watchlist]);
 
   function addToWatchlist(movie) {
-    setWatchlist((prev) => [...prev, movie]);
+    setWatchlist((prev) =>
+      prev.some((m) => m.id === movie.id) ? prev : [...prev, movie]
+    );
   }
 
+ 
   function removeFromWatchlist(id) {
     setWatchlist((prev) => prev.filter((m) => m.id !== id));
   }
 
+  
   function isInWatchlist(id) {
     return watchlist.some((m) => m.id === id);
   }

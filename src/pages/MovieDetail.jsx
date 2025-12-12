@@ -11,8 +11,7 @@ export default function MovieDetail() {
   const [loading, setLoading] = useState(!movie);
   const [showTrailer, setShowTrailer] = useState(false);
 
-  const { addToWatchlist, removeFromWatchlist, isInWatchlist } =
-    useWatchlist();
+  const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
 
   const trailerURL = "https://www.youtube.com/embed/dQw4w9WgXcQ";
 
@@ -58,7 +57,8 @@ export default function MovieDetail() {
   }
 
   const poster =
-    movie.poster_path || "https://via.placeholder.com/400x600?text=No+Image";
+    movie.poster_path ||
+    "https://via.placeholder.com/400x600?text=No+Image";
 
   const genres = movie.genres || [movie.genre || "Unknown"];
   const genreStr = genres.join(", ");
@@ -104,7 +104,7 @@ export default function MovieDetail() {
       <h2 className="section-title">Cast</h2>
 
       <div className="cast-grid">
-        {(movie.casts || []).slice(0,8).map((c) => (
+        {(movie.casts || []).slice(0, 8).map((c) => (
           <div className="cast-card" key={c.id}>
             <img
               src={
@@ -112,6 +112,7 @@ export default function MovieDetail() {
                 "https://via.placeholder.com/200x250?text=No+Image"
               }
               className="cast-image"
+              alt=""
             />
             <p className="cast-name">{c.name}</p>
             <p className="cast-role">{c.character}</p>
@@ -151,19 +152,20 @@ export default function MovieDetail() {
                 "https://via.placeholder.com/300x400?text=No+Image"
               }
               className="related-poster"
+              alt=""
             />
 
             <p className="related-title">{m.original_title}</p>
             <p className="related-rating">⭐ {m.vote_average}</p>
 
             <div className="related-buttons">
-            <Link
-              to={`/movie/${m.movie_id}`}
-              state={{ movie: m }}
-              className="details-btn"
-            >
-              Details
-            </Link>
+              <Link
+                to={`/movie/${m.movie_id}`}
+                state={{ movie: m }}
+                className="details-btn"
+              >
+                Details
+              </Link>
 
               <button
                 className={`watchlist-btn ${

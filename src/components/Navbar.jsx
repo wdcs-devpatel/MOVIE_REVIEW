@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
-import { useWatchlist } from "../../context/WatchlistContext";
-import useTheme from "../../context/ThemeContext";
+import { useWatchlist } from "../context/WatchlistContext.jsx";
+import useTheme from "../context/ThemeContext.jsx";
 
 export default function Navbar() {
   const { watchlist } = useWatchlist();
@@ -15,6 +15,7 @@ export default function Navbar() {
       <div className="nav-right">
         <NavLink to="/" className="nav-link" end>Home</NavLink>
         <NavLink to="/search" className="nav-link">Search</NavLink>
+
         <NavLink to="/watchlist" className="nav-link">
           Watchlist ({watchlist.length})
         </NavLink>

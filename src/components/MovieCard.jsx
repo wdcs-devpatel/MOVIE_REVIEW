@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useWatchlist } from "../../context/WatchlistContext";
+import { useWatchlist } from "../context/WatchlistContext";
 
 export default function MovieCard({ movie }) {
   const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist();
@@ -12,13 +12,17 @@ export default function MovieCard({ movie }) {
   const genre = movie.genre || movie.genres?.[0] || "Unknown";
 
   const year = movie.release_date
-    ? movie.release_date.slice(11,16)
+    ? movie.release_date.slice(-4)
     : "Unknown";
 
   return (
     <div className="movie-card">
       <div className="poster-wrapper">
-        <img src={poster} alt={movie.original_title} className="movie-poster" />
+        <img
+          src={poster}
+          alt={movie.original_title}
+          className="movie-poster"
+        />
       </div>
 
       <h3 className="movie-title">{movie.original_title}</h3>
