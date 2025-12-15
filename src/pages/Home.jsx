@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { getMovies } from "../api/api";
 import useFetch from "../hooks/useFetch";
-
 import MovieGrid from "../components/MovieGrid.jsx";
 import SkeletonCard from "../components/SkeletonCard.jsx";
 import ErrorState from "../components/ErrorState.jsx";
@@ -19,14 +18,7 @@ export default function Home() {
 
   return (
     <div className="page-container">
-      {loading && (
-        <div className="movie-grid">
-          {Array.from({ length: 18 }).map((_, i) => (
-            <SkeletonCard key={i} />
-          ))}
-        </div>
-      )}
-
+ 
       {error && <ErrorState retry={refetch} />}
 
       {!loading && movies.length > 0 && (
@@ -51,7 +43,7 @@ export default function Home() {
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === 20}
             >
-              Next
+               Next
             </button>
           </div>
         </>

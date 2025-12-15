@@ -13,7 +13,6 @@ async function safeFetch(url) {
   }
 }
 
-
 const GENRES = ["Drama", "Action", "Comedy", "Crime", "Romance", "Thriller", "Sci-Fi"];
 
 function assignGenre(movie) {
@@ -56,7 +55,7 @@ export async function searchMovies(query, page = 1) {
       ...m,
       genre,
       genres: [genre],
-      year: m.release_date ? Number(m.release_date.slice(0, 4)) : null,
+      year: m.release_date ? Number(m.release_date.slice(-4)) : null,
       rating: m.vote_average || 0
     };
   });
@@ -81,8 +80,6 @@ export async function searchMovies(query, page = 1) {
 
   return fastResult;
 }
-
-
 
 export async function getMovieById(id) {
   for (let p = 1; p <= 20; p++) {
